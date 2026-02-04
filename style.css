@@ -1,0 +1,167 @@
+:root {
+    --primary-color: #ff4d6d;
+    --secondary-color: #ff8fa3;
+    --bg-color: #fff0f3;
+    --text-color: #590d22;
+    --card-bg: rgba(255, 255, 255, 0.8);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    background-image: radial-gradient(#ffccd5 1px, transparent 1px);
+    background-size: 20px 20px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+    backdrop-filter: blur(10px);
+    max-width: 90%;
+    width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text-color);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.gif-container {
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+    /* Wraps tight around content for absolute positioning context */
+}
+
+.main-img {
+    height: auto;
+    border-radius: 10px;
+}
+
+.sad-hamster {
+    max-width: 180px;
+    display: block;
+}
+
+.flower {
+    max-width: 80px;
+    position: absolute;
+    left: -30px;
+    /* Shift to left side */
+    bottom: -10px;
+    /* Align near bottom/hands area */
+    z-index: 10;
+    transform: rotate(-15deg);
+    /* Slight tilt for holding look */
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    position: relative;
+    /* Important for no-btn positioning logic if we wanted it relative to buttons, but we'll specificy global or container relative logic in JS */
+}
+
+.btn {
+    padding: 0.8rem 2.5rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.yes-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.yes-btn:hover {
+    background-color: #ff2a52;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+}
+
+.no-btn {
+    background-color: white;
+    color: var(--text-color);
+    border: 2px solid var(--secondary-color);
+    position: relative;
+    /* Allows it to sit in flow initially */
+}
+
+.no-btn:hover {
+    background-color: #ffe6ea;
+}
+
+/* Class to manage absolute positioning when it starts moving */
+.no-btn.moving {
+    position: fixed;
+    /* Fixed relative to viewport to match JS getBoundingClientRect coordinates */
+    transition: all 0.2s ease-out;
+    /* Smoother/faster transition for short jumps */
+}
+
+.pull-rope {
+    position: fixed;
+    /* Fixed to match the button's coordinate space */
+    width: 200px;
+    /* Made larger as requested */
+    height: auto;
+    z-index: 50;
+    pointer-events: none;
+    /* Let clicks pass through */
+}
+
+.tired-gif {
+    position: fixed;
+    width: 150px;
+    /* Bigger */
+    height: auto;
+    z-index: 60;
+    pointer-events: none;
+}
+
+.eat-gif {
+    position: fixed;
+    width: 150px;
+    height: auto;
+    z-index: 60;
+    pointer-events: none;
+}
+
+.hidden {
+    display: none;
+}
