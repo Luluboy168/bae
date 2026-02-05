@@ -168,7 +168,45 @@ h1 {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+/* ====== MOBILE BLOCKER STYLES ====== */
+.mobile-blocker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    text-align: center;
+}
+
+.mobile-blocker-content {
+    padding: 30px;
+    max-width: 90%;
+}
+
+.construction-img {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.mobile-blocker-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.mobile-blocker-subtext {
+    font-size: 1.1rem;
+    color: #666;
 }
 
 /* ====== CAPTCHA STYLES ====== */

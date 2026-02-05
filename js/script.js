@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // ====== MOBILE DETECTION ======
+    const mobileBlocker = document.getElementById('mobile-blocker');
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile && mobileBlocker) {
+        mobileBlocker.classList.remove('hidden');
+        // Hide everything else
+        const captchaOverlay = document.getElementById('captcha-overlay');
+        const mainContainer = document.getElementById('main-container');
+        if (captchaOverlay) captchaOverlay.style.display = 'none';
+        if (mainContainer) mainContainer.style.display = 'none';
+        return; // Stop executing the rest of the script
+    }
+
     // ====== CAPTCHA LOGIC ======
     const captchaOverlay = document.getElementById('captcha-overlay');
     const captchaCheckbox = document.getElementById('captcha-checkbox');
@@ -102,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Configuration
     const moveDistance = 60; // Distance to move (Reduced for smaller hops)
-    const maxChases = 15;
+    const maxChases = 10;
     let chaseCount = 0;
     let hasClickedNo = false;
 
