@@ -1,4 +1,100 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // ====== CAPTCHA LOGIC ======
+    const captchaOverlay = document.getElementById('captcha-overlay');
+    const captchaCheckbox = document.getElementById('captcha-checkbox');
+    const captchaStep1 = document.getElementById('captcha-step1');
+    const captchaStep2 = document.getElementById('captcha-step2');
+    const captchaGrid = document.getElementById('captcha-grid');
+    const captchaVerify = document.getElementById('captcha-verify');
+    const mainContainer = document.getElementById('main-container');
+
+    // Generate 5x4 grid cells (20 total)
+    const cols = 5;
+    const rows = 4;
+    const totalCells = cols * rows;
+
+    for (let i = 0; i < totalCells; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'captcha-cell';
+
+        // Calculate background-position for this cell
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        // background-position percentages: 0%, 33.33%, 66.66%, 100% for 4 cols
+        // Formula: (col / (cols - 1)) * 100 for x, (row / (rows - 1)) * 100 for y
+        const xPos = cols > 1 ? (col / (cols - 1)) * 100 : 0;
+        const yPos = rows > 1 ? (row / (rows - 1)) * 100 : 0;
+
+        cell.style.backgroundImage = 'url("assets/bf.png")';
+        cell.style.backgroundPosition = `${xPos}% ${yPos}%`;
+
+        cell.addEventListener('click', () => {
+            cell.classList.toggle('selected');
+        });
+
+        captchaGrid.appendChild(cell);
+    }
+
+    // Checkbox click -> show image grid
+    captchaCheckbox.addEventListener('change', () => {
+        if (captchaCheckbox.checked) {
+            setTimeout(() => {
+                captchaStep1.classList.add('hidden');
+                captchaStep2.classList.remove('hidden');
+            }, 300); // Short delay for checkbox animation
+        }
+    });
+
+    // Verify button -> check if correct cells are selected
+    // Three valid answers using (row, col) -> index = row * 5 + col
+    // Answer 1: (1,1),(2,1),(3,1),(1,2),(2,2),(3,2) -> [6,11,16,7,12,17]
+    // Answer 2: (3,0),(1,1),(2,1),(3,1),(1,2),(2,2),(3,2) -> [15,6,11,16,7,12,17]
+    // Answer 3: (2,0),(3,0),(1,1),(2,1),(3,1),(1,2),(2,2),(3,2) -> [10,15,6,11,16,7,12,17]
+    const validAnswers = [
+        new Set([6, 7, 11, 12, 16, 17]),
+        new Set([6, 7, 11, 12, 15, 16, 17]),
+        new Set([6, 7, 10, 11, 12, 15, 16, 17])
+    ];
+
+    captchaVerify.addEventListener('click', () => {
+        const cells = captchaGrid.querySelectorAll('.captcha-cell');
+
+        // Get user's selected cell indices
+        const userSelection = new Set();
+        cells.forEach((cell, index) => {
+            if (cell.classList.contains('selected')) {
+                userSelection.add(index);
+            }
+        });
+
+        // Check if user's selection matches any valid answer
+        const isCorrect = validAnswers.some(validAnswer => {
+            if (userSelection.size !== validAnswer.size) return false;
+            for (const idx of userSelection) {
+                if (!validAnswer.has(idx)) return false;
+            }
+            return true;
+        });
+
+        if (isCorrect) {
+            // Success! All cells selected (all contain bf)
+            captchaOverlay.style.transition = 'opacity 0.5s';
+            captchaOverlay.style.opacity = '0';
+
+            setTimeout(() => {
+                captchaOverlay.style.display = 'none';
+                mainContainer.classList.remove('hidden');
+            }, 500);
+        } else {
+            // Wrong! Shake the verify button
+            captchaVerify.style.animation = 'shake 0.3s';
+            setTimeout(() => {
+                captchaVerify.style.animation = '';
+            }, 300);
+        }
+    });
+
+    // ====== MAIN PAGE LOGIC ======
     const noBtn = document.getElementById('no-btn');
     const yesBtn = document.getElementById('yes-btn');
     const question = document.getElementById('question');
