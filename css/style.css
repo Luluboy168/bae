@@ -83,6 +83,11 @@ h1 {
     /* Slight tilt for holding look */
 }
 
+.firework {
+    max-width: 200px;
+    height: auto;
+}
+
 .buttons {
     display: flex;
     justify-content: center;
@@ -187,6 +192,7 @@ h1 {
     padding: 20px;
     min-width: 300px;
     font-family: 'Roboto', 'Poppins', sans-serif;
+    margin-top: 50px;
 }
 
 .captcha-header {
@@ -262,7 +268,7 @@ h1 {
     background: #4285f4;
     color: white;
     padding: 15px;
-    margin: -20px -20px 15px -20px;
+    margin: -20px -20px 25px -20px;
     border-radius: 3px 3px 0 0;
     text-align: left;
 }

@@ -548,33 +548,91 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Celebration on 'Yes' click
+    let hasClickedYes = false;
+
     yesBtn.addEventListener('click', () => {
-        question.textContent = "I knew you would say YES! ❤️";
+        if (!hasClickedYes) {
+            // FIRST CLICK - Show celebration
+            hasClickedYes = true;
+            question.textContent = "I knew you would say YES! ❤️";
 
-        // Confetti explosion
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
-        });
+            // Confetti explosion
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
+            });
 
-        // Continuous confetti
-        const duration = 3000;
-        const animationEnd = Date.now() + duration;
-        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-        const random = (min, max) => Math.random() * (max - min) + min;
+            // Continuous confetti
+            const duration = 3000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            const random = (min, max) => Math.random() * (max - min) + min;
 
-        const interval = setInterval(function () {
-            const timeLeft = animationEnd - Date.now();
-            if (timeLeft <= 0) return clearInterval(interval);
-            const particleCount = 50 * (timeLeft / duration);
-            confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
-            confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
-        }, 250);
+            const interval = setInterval(function () {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                const particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
 
-        noBtn.style.display = 'none';
-        pullRopeGif.style.display = 'none';
-        yesBtn.textContent = "❤️";
+            noBtn.style.display = 'none';
+            pullRopeGif.style.display = 'none';
+
+            // Hide "Just Kidding..." text if present
+            const tiredMsg = document.getElementById('tired-msg');
+            if (tiredMsg) tiredMsg.style.display = 'none';
+
+            yesBtn.textContent = "❤️";
+
+        } else {
+            // SECOND CLICK (Heart button) - Show fireworks and final message
+            const hamster = document.querySelector('.sad-hamster');
+            const flower = document.querySelector('.flower');
+
+            // Replace hamster with firework.gif (only one firework)
+            if (hamster) {
+                hamster.src = 'assets/firework.gif';
+                hamster.alt = 'Firework';
+                hamster.classList.remove('sad-hamster');
+                hamster.classList.add('firework');
+            }
+
+            // Hide flower
+            if (flower) {
+                flower.style.display = 'none';
+            }
+
+            // Add "Happy Valentine's Day!" text below the firework
+            const gifContainer = document.querySelector('.gif-container');
+            if (gifContainer) {
+                let valentineText = document.getElementById('valentine-text');
+                if (!valentineText) {
+                    valentineText = document.createElement('p');
+                    valentineText.id = 'valentine-text';
+                    valentineText.textContent = "Happy Valentine's Day!";
+                    valentineText.style.fontSize = '1.5rem';
+                    valentineText.style.fontWeight = 'bold';
+                    valentineText.style.color = '#ff4d6d';
+                    valentineText.style.marginTop = '15px';
+                    valentineText.style.textShadow = '0 2px 4px rgba(255, 77, 109, 0.3)';
+                    gifContainer.appendChild(valentineText);
+                }
+            }
+
+            // Hide button and show final text
+            yesBtn.style.display = 'none';
+            question.textContent = "I love you too! 💕";
+
+            // Extra confetti burst!
+            confetti({
+                particleCount: 200,
+                spread: 120,
+                origin: { y: 0.5 },
+                colors: ['#ff4d6d', '#ff8fa3', '#ffffff', '#ffccd5']
+            });
+        }
     });
 });
